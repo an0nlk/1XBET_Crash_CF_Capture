@@ -6,11 +6,11 @@ Author: Kalana Sankalpa (Anon LK).<br />
 
 ## How to use
 
-Change the 1XBET URL in "1xbet_crash_cf_capture.js" if needed.
+Change the 1XBET URL in "1xbet_crash_cf_capture.js" (if needed).
 <br />
-Change the browser location in "launch.js"
+Change the browser location in "launch.js".
 <br />
-Change the headless value in "launch.js" to false to run the browser in background"
+Change the headless value in "launch.js" to false to run the browser in background (if needed).
 <br />
 Then Run:
 
