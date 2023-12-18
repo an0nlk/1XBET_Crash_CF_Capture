@@ -16,7 +16,7 @@ async function getWsEndpoint() {
     });
 
     let page = await browser.newPage();
-    await page.goto("https://1xlite-686449.top/en/allgamesentrance/crash");
+    await page.goto("https://1xbet.com/en/allgamesentrance/crash");
 
     const client = await page.target().createCDPSession()
 
