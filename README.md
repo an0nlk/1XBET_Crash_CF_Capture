@@ -9,6 +9,7 @@ Author: Kalana Sankalpa (Anon LK).<br />
 Change the 1XBET URL in "1xbet_crash_cf_capture.js" if needed.
 <br />
 Change the browser location in "launch.js"
+<br />
 Change the headless value in "launch.js" to false to run the browser in background"
 <br />
 Then Run:
