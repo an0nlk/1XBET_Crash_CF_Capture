@@ -1,7 +1,7 @@
-# 1XBET_Crash_CF_Capture
+# 1XBET Crash CF Capture
 Capture the CF Value of 1XBET Crash game using Puppeteer
 <br /><br />
-Script Title: 1XBET_Crash_CF_Capture. <br />
+Script Title: 1XBET Crash CF Capture. <br />
 Author: Kalana Sankalpa (Anon LK).<br />
 
 ## How to use
