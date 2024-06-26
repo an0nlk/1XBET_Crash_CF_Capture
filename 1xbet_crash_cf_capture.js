@@ -3,49 +3,75 @@ const launch = require("./launch");
 const fs = require('fs');
 const wait = (ms) => new Promise(res => setTimeout(res, ms));
 
-//get WsEndpoint
+// Get WebSocket endpoint
 async function getWsEndpoint() {
+    console.log("Launching browser...");
     let wsEndpoint = await launch();
+    console.log("WebSocket endpoint obtained:", wsEndpoint);
     return wsEndpoint;
 }
 
 (async () => {
+    console.log("Starting script...");
+
+    const browserWSEndpoint = await getWsEndpoint();
+    console.log("Connecting to browser with WebSocket endpoint...");
     const browser = await puppeteer.connect({
-        browserWSEndpoint: await getWsEndpoint(),
+        browserWSEndpoint,
         defaultViewport: null,
     });
 
+    console.log("Opening new page...");
     let page = await browser.newPage();
-    await page.goto("https://1xbet.com/en/allgamesentrance/crash");
+    console.log("Navigating to the URL...");
+    await page.goto("https://1xbet.com/fr/allgamesentrance/crash");
 
-    const client = await page.target().createCDPSession()
+    const client = await page.target().createCDPSession();
 
-    await client.send('Network.enable')
+    console.log("Enabling Network...");
+    await client.send('Network.enable');
 
     client.on('Network.webSocketFrameReceived', ({ requestId, timestamp, response }) => {
+        console.log("WebSocket frame received:", response);
         let payloadString = response.payloadData.toString('utf8');
-        
+
         try {
-          if (payloadString.includes('"ic":true')) {
+            // Remove non-printable characters
             payloadString = payloadString.replace(/[^\x20-\x7E]/g, '');
             const payload = JSON.parse(payloadString);
-      
-            const { cf, mfs, ts } = payload.arguments[0];
-            console.log(cf, mfs, ts);
-            const csvData = `${cf},${mfs},${ts}\n`;
             
-            fs.appendFile('data.csv', csvData, (err) => {
-              if (err) throw err;
-            });
-          }
-        } catch (error) {
-          console.error('Error processing WebSocket frame:', error);
-        }
-      });
+            console.log("Parsed payload:", payload);
 
-    while(true){
+            // Check if payload is of the correct type and target
+            if (payload.type === 1 && payload.target === "OnCrash") {
+                const { l, f, ts } = payload.arguments[0];
+
+                const csvData = `${ts},${f},${l}\n`;
+                const txtData = `ts: ${ts}, f: ${f}, l: ${l}\n`;
+
+                // Append to CSV
+                fs.appendFile('data.csv', csvData, (err) => {
+                    if (err) throw err;
+                    console.log("Data appended to CSV:", csvData);
+                });
+
+                // Append to TXT
+                fs.appendFile('data.txt', txtData, (err) => {
+                    if (err) throw err;
+                    console.log("Data appended to TXT:", txtData);
+                });
+            }
+        } catch (error) {
+            console.error('Error processing WebSocket frame:', error);
+        }
+    });
+
+    console.log("Starting key press loop...");
+    while (true) {
+        console.log("Pressing 'Tab' key...");
         await page.keyboard.press("Tab");
         await wait(1000);
+        console.log("Pressing 'ArrowDown' key...");
         await page.keyboard.press("ArrowDown");
         await wait(1000);
     }
