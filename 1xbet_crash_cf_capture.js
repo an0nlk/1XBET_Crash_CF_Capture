@@ -24,7 +24,7 @@ async function getWsEndpoint() {
     console.log("Opening new page...");
     let page = await browser.newPage();
     console.log("Navigating to the URL...");
-    await page.goto("https://1xbet.com/fr/allgamesentrance/crash");
+    await page.goto("https://eg1xbet.com/ar/allgamesentrance/crash");
 
     const client = await page.target().createCDPSession();
 
