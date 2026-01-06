@@ -124,4 +124,5 @@ async function scrapeDivData(page) {
     while (true) {
         await wait(1000);
     }
+
 })();
